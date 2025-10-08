@@ -7,6 +7,19 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+Route::get('contact-page', function () {
+    $company = 'Hogeschool Rotterdam';
+    return view('contact-page', [
+        'company' => $company,
+    ]);
+});
+
+Route::get('products/{id}', function (int $id) {
+    return view('product', ['id' => $id]);
+})->name(name: 'products');
+
+Route::resource('products', ProductController::class);
+
 Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
