@@ -2,13 +2,15 @@
 
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
+use App\Models\User;
 
 Route::get('/', function () {
     return view('welcome');
 });
 
 Route::get('/home', function () {
-    return view('home');
+    $users = User::all();
+    return view('home', ['users' => $users]);
 }) ->name('home');
 
 Route::get('/about', function () {
@@ -16,7 +18,7 @@ Route::get('/about', function () {
 }) ->name('about');;
 
 Route::get('/contact', function () {
-    return view('contact');
+    return view('contact', ['name' => 'Samantha']);
 }) ->name('contact');;
 
 
