@@ -3,17 +3,17 @@
 @if($games->isEmpty())
     <p>No games found.</p>
 @else
-    <ul>
+    <ul class="game-list">
         @foreach($games as $game)
-            <li>
-                <div> the game id is {{ $game->id }}</div>
-                <div> user {{ $game->user_id }} made this</div>
-                <div> the game is called {{ $game->title }}</div>
-                <div> a image for the game is {{ $game->image }}</div>
-                <div> about this game: {{ $game->description }}</div>
-                <div> the game is categorized as {{ $game->category_id }}</div>
-                <div> its usual retail price is {{ $game->price }}</div>
-                <div> it's current discount is {{ $game->discount }}</div>
+            <li class="game-item">
+                <h3 class="game-title">{{ $game->title }}</h3>
+                <img src="{{ $game->image }}" alt="{{ $game->title }}" class="game-image">
+                <p><strong>Game ID:</strong> {{ $game->id }}</p>
+                <p><strong>Created by User:</strong> {{ $game->user_id }}</p>
+                <p><strong>Description:</strong> {{ $game->description }}</p>
+                <p><strong>Category:</strong> {{ $game->category_id }}</p>
+                <p><strong>Price:</strong> ${{ $game->price }}</p>
+                <p><strong>Discount:</strong> {{ $game->discount }}%</p>
             </li>
         @endforeach
     </ul>
