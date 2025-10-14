@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\GameController;
 use Illuminate\Support\Facades\Route;
 use App\Models\User;
 
@@ -15,11 +16,18 @@ Route::get('/home', function () {
 
 Route::get('/about', function () {
     return view('about');
-}) ->name('about');;
+}) ->name('about');
 
 Route::get('/contact', function () {
-    return view('contact', ['name' => 'Samantha']);
-}) ->name('contact');;
+    return view('contact');
+}) ->name('contact');
+
+Route::get('/game', function () {
+    return view('game');
+}) ->name('game');
+
+
+Route::resource('games', GameController::class);
 
 
 
