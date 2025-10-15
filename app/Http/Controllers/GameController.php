@@ -20,7 +20,7 @@ class GameController extends Controller
      */
     public function create()
     {
-        //
+        return view('games.create');
     }
 
     /**
@@ -28,7 +28,30 @@ class GameController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validatedData = $request->validate([
+            'title' => 'required | string | max:255',
+            'image' => 'required | string | max:255',
+            'description' => 'required | string | max:255',
+            'price' => 'required | numeric',
+            'discount' => 'required | numeric',
+        ]);
+
+        $game = new game();
+
+        $game->title = $request->input('title');
+        $game->image = $request->input('image');
+        $game->description = $request->input('description');
+        $game->price = $request->input('price');
+        $game->discount = $request->input('discount');
+
+        //foreign id filler cases (need to be dynamic later)
+        $game->user_id = 1;
+        $game->category_id = 1;
+
+        //save new data
+        $game->save();
+
+        return redirect()->route ('games.index');
     }
 
     /**

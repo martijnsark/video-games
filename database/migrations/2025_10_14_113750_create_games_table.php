@@ -20,6 +20,7 @@ return new class extends Migration
             $table->foreignId('category_id');
             $table->integer('price');
             $table->integer('discount');
+            $table->timestamps();
         });
     }
 
