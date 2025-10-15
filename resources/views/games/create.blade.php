@@ -2,10 +2,21 @@
 <div>create game form</div>
     <form action="{{ route('games.store') }}" method="post">
         @csrf
+
         <label for="title">Title:</label>
         <input type="text" id="title" name="title">
         @error('title')
             {{ $message }}
+        @enderror
+
+        <select name="category_id" id="category_id" class="form-control">
+            <option value=""> select a category </option>
+            @foreach($categories as $category)
+                <option value="{{ $category->id }}">{{ $category->name }}</option>
+            @endforeach
+        </select>
+        @error('category_id')
+        {{ $message }}
         @enderror
 
         <label for="image">Image:</label>

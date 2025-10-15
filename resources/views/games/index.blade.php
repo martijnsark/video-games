@@ -14,7 +14,7 @@
                     <p><strong>Game ID:</strong> {{ $game->id }}</p>
                     <p><strong>Created by User:</strong> {{ $game->user_id }}</p>
                     <p><strong>Description:</strong> {{ $game->description }}</p>
-                    <p><strong>Category:</strong> {{ $game->category_id }}</p>
+                    <p><strong>Category:</strong> {{ $game->category ? $game->category->name : 'No Category' }}</p>
                     <p><strong>Price:</strong> ${{ $game->price }}</p>
                     <p><strong>Discount:</strong> {{ $game->discount }}%</p>
                 </li>

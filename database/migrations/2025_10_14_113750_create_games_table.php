@@ -13,11 +13,11 @@ return new class extends Migration
     {
         Schema::create('games', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id');
+            $table->foreignId('user_id')->nullable() ->constrained();
             $table->string('title');
             $table->string('image');
             $table->string('description');
-            $table->foreignId('category_id');
+            $table->foreignId('category_id')->constrained();
             $table->integer('price');
             $table->integer('discount');
             $table->timestamps();
