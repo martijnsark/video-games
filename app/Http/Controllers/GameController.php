@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Facades\Auth;
 use App\Models\Category;
 use Illuminate\Http\Request;
 use App\Models\Game;
@@ -13,7 +14,7 @@ class GameController extends Controller
      */
     public function index()
     {
-        $games = Game::with('category')->get();
+        $games = Game::with('category', 'user')->get();
         return view('games.index', compact('games'));
     }
     /**
@@ -30,6 +31,12 @@ class GameController extends Controller
      */
     public function store(Request $request)
     {
+        //double check user sign-in
+        if (!Auth::check()) {
+            abort(403, 'You must be logged in to create a game.');
+        }
+
+
         $validatedData = $request->validate([
             'title' => 'required | string | max:255',
             'image' => 'required | string | max:255',
@@ -47,8 +54,10 @@ class GameController extends Controller
         $game->price = $request->input('price');
         $game->discount = $request->input('discount');
 
-        //foreign id filler cases (need to be dynamic later)
-        $game->user_id = 1;
+        //foreign id
+        //hard coded
+        //$game->user_id = 1;
+        $game->user_id = Auth::id();
         $game->category_id = $request->input('category_id');
 
         //save new data

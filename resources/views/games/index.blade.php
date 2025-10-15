@@ -12,7 +12,7 @@
                     <h3 class="game-title">{{ $game->title }}</h3>
                     <img src="{{ $game->image }}" alt="{{ $game->title }}" class="game-image">
                     <p><strong>Game ID:</strong> {{ $game->id }}</p>
-                    <p><strong>Created by User:</strong> {{ $game->user_id }}</p>
+                    <p>Posted by: {{ $game->user->name }}</p>
                     <p><strong>Description:</strong> {{ $game->description }}</p>
                     <p><strong>Category:</strong> {{ $game->category ? $game->category->name : 'No Category' }}</p>
                     <p><strong>Price:</strong> ${{ $game->price }}</p>

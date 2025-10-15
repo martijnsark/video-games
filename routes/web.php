@@ -26,8 +26,11 @@ Route::get('/game', function () {
     return view('game');
 }) ->name('game');
 
+//middleware to ensure logged-in users only
+Route::middleware(['auth'])->group(function () {
+    Route::resource('games', GameController::class);
+});
 
-Route::resource('games', GameController::class);
 
 
 
