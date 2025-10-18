@@ -77,17 +77,29 @@ class GameController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(Game $game)
     {
-        //
+        $categories = Category::all();
+        return view('games.edit', compact('game', 'categories'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, Game $game)
     {
-        //
+        $validatedData = $request->validate([
+            'title' => 'required|string|max:255',
+            'image' => 'required|string|max:255',
+            'description' => 'required|string|max:255',
+            'price' => 'required|numeric',
+            'discount' => 'required|numeric',
+            'category_id' => 'required|exists:categories,id',
+        ]);
+
+        $game->update($validatedData);
+
+        return redirect()->route('games.index');
     }
 
     /**

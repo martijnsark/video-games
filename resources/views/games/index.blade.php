@@ -20,6 +20,7 @@
                     <p class="text-gray-400"><strong>Category:</strong> {{ $game->category ? $game->category->name : 'No Category' }}</p>
                     <p class="text-gray-400"><strong>Price:</strong> ${{ $game->price }}</p>
                     <p class="text-gray-400"><strong>Discount:</strong> {{ $game->discount }}%</p>
+                    <a href="{{ route('games.edit', $game->id) }}" class="btn btn-primary text-gray-400">Edit Game</a>
                 </li>
             @endforeach
         </ul>
