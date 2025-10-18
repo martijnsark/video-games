@@ -1,49 +1,52 @@
 <x-app-layout>
-<div>create game form</div>
-    <form action="{{ route('games.store') }}" method="post">
-        @csrf
+    <div class="flex items-center justify-center min-h-screen">
+        <form action="{{ route('games.store') }}" method="post" class="flex flex-col space-y-4 w-full max-w-xl p-4">
+            @csrf
 
-        <label for="title">Title:</label>
-        <input type="text" id="title" name="title">
-        @error('title')
-            {{ $message }}
-        @enderror
+            <p class="text-gray-400">create game form</p>
 
-        <select name="category_id" id="category_id" class="form-control">
-            <option value=""> select a category </option>
-            @foreach($categories as $category)
-                <option value="{{ $category->id }}">{{ $category->name }}</option>
-            @endforeach
-        </select>
-        @error('category_id')
-        {{ $message }}
-        @enderror
+            <label for="title" class="text-gray-400">Title:</label>
+            <input type="text" id="title" name="title">
+            @error('title')
+            <span class="text-red-500 text-sm">{{ $message }}</span>
+            @enderror
 
-        <label for="image">Image:</label>
-        <input type="text" id="image" name="image">
-        @error('image')
-        {{ $message }}
-        @enderror
+            <select name="category_id" id="category_id" class="form-control">
+                <option value=""> select a category </option>
+                @foreach($categories as $category)
+                    <option value="{{ $category->id }}">{{ $category->name }}</option>
+                @endforeach
+            </select>
+            @error('category_id')
+            <span class="text-red-500 text-sm">{{ $message }}</span>
+            @enderror
 
-        <label for="description">Description:</label>
-        <input type="text" id="description" name="description">
-        @error('description')
-        {{ $message }}
-        @enderror
+            <label for="image" class="text-gray-400">Image:</label>
+            <input type="text" id="image" name="image">
+            @error('image')
+            <span class="text-red-500 text-sm">{{ $message }}</span>
+            @enderror
 
-        <label for="price">Price:</label>
-        <input type="number" id="price" name="price">
-        @error('price')
-        {{ $message }}
-        @enderror
+            <label for="description" class="text-gray-400">Description:</label>
+            <input type="text" id="description" name="description">
+            @error('description')
+            <span class="text-red-500 text-sm">{{ $message }}</span>
+            @enderror
 
-        <label for="discount">Discount:</label>
-        <input type="number" id="discount" name="discount">
-        @error('discount')
-        {{ $message }}
-        @enderror
+            <label for="price" class="text-gray-400">Price:</label>
+            <input type="number" id="price" name="price">
+            @error('price')
+            <span class="text-red-500 text-sm">{{ $message }}</span>
+            @enderror
 
-        <button type="submit">Submit</button>
-    </form>
+            <label for="discount" class="text-gray-400">Discount:</label>
+            <input type="number" id="discount" name="discount">
+            @error('discount')
+            <span class="text-red-500 text-sm">{{ $message }}</span>
+            @enderror
+
+            <button type="submit" class="text-gray-400">Submit</button>
+        </form>
+    </div>
 
 </x-app-layout>
