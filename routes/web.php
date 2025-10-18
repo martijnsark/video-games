@@ -10,26 +10,17 @@ Route::get('/', function () {
 });
 
 Route::get('/home', function () {
-    $users = User::all();
-    return view('home', ['users' => $users]);
+    return view('home');
 }) ->name('home');
 
 Route::get('/about', function () {
     return view('about');
 }) ->name('about');
 
-Route::get('/contact', function () {
-    return view('contact');
-}) ->name('contact');
-
-Route::get('/game', function () {
-    return view('game');
-}) ->name('game');
-
 //middleware to ensure logged-in users only
 Route::middleware(['auth'])->group(function () {
     Route::resource('games', GameController::class);
-});
+}) ->name('games');
 
 
 

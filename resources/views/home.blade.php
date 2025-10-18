@@ -1,16 +1,7 @@
 <x-app-layout>
-    <div>hello world</div>
+    <h1 class="text-gray-400">Welcome to Martijns game manager!</h1>
 
-    @if(auth()->check())
-        <h1> Hello, {{ auth()->user()->name }}! </h1>
-
-        @foreach ($users as $user)
-            <p> id {{ $user->id }} has been taken </p>
-        @endforeach
-    @else
-        <h1> Hello, Guest! </h1>
-        <a href="{{ route('login') }}">Login </a>
-    @endif
+    <p class="text-gray-400">This website was designed for the soul purpose to create, manage, and compare games and their prices and discounts respectively.</p>
 
 </x-app-layout>
 
