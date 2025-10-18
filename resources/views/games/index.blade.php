@@ -20,7 +20,15 @@
                     <p class="text-gray-400"><strong>Category:</strong> {{ $game->category ? $game->category->name : 'No Category' }}</p>
                     <p class="text-gray-400"><strong>Price:</strong> ${{ $game->price }}</p>
                     <p class="text-gray-400"><strong>Discount:</strong> {{ $game->discount }}%</p>
+
+                    <!-- edit game link based on game id -->
                     <a href="{{ route('games.edit', $game->id) }}" class="btn btn-primary text-gray-400">Edit Game</a>
+                    <!-- Delete form -->
+                    <form action="{{ route('games.destroy', $game->id) }}" method="POST">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit" class="btn btn-danger text-gray-400">Delete Game</button>
+                    </form>
                 </li>
             @endforeach
         </ul>
