@@ -12,10 +12,45 @@ class GameController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $games = Game::with('category', 'user')->get();
-        return view('games.index', compact('games'));
+        $query = Game::with('category', 'user');
+
+        // if search returned a value = search value
+        if ($request->filled('search')) {
+            $search = $request->input('search');
+
+           // build query based on search
+            $query->where(function ($q) use ($search) {
+                // search based on title, image, description, price, or discount
+                $q->where('title', 'like', "%{$search}%")
+                    ->orWhere('image', 'like', "%{$search}%")
+                    ->orWhere('description', 'like', "%{$search}%")
+                    ->orWhere('price', 'like', "%{$search}%")
+                    ->orWhere('discount', 'like', "%{$search}%");
+
+                // search based on category
+                $q->orWhereHas('category', function ($catQuery) use ($search) {
+                    $catQuery->where('name', 'like', "%{$search}%");
+                });
+
+                // search based on user
+                $q->orWhereHas('user', function ($userQuery) use ($search) {
+                    $userQuery->where('name', 'like', "%{$search}%");
+                });
+            });
+        }
+
+        // category search buttons logic
+        if ($request->filled('category')) {
+            $query->where('category_id', $request->input('category'));
+        }
+
+        $games = $query->get();
+        // show buttons
+        $categories = Category::all();
+
+        return view('games.index', compact('games', 'categories'));
     }
     /**
      * Show the form for creating a new resource.
