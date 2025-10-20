@@ -8,4 +8,7 @@
     <a href="{{ route('games.index') }}" class="text-gray-400 hover:text-gray-200 text-lg tracking-wide transition">
         games
     </a>
+    <a href="{{ route('games.overview') }}" class="text-gray-400 hover:text-gray-200 text-lg tracking-wide transition">
+        overview
+    </a>
 </nav>

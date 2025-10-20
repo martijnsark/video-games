@@ -17,12 +17,18 @@ Route::get('/about', function () {
     return view('about');
 }) ->name('about');
 
-//middleware to ensure logged-in users only
+// route to overview page
+Route::get('/games/overview', [GameController::class, 'overview'])
+    ->name('games.overview');
+
+// middleware to ensure logged-in users only
 Route::middleware(['auth'])->group(function () {
     Route::resource('games', GameController::class);
 }) ->name('games');
 
-
+// route to update status data
+Route::patch('/games/{game}/toggle', [GameController::class, 'toggleStatus'])
+    ->name('games.toggle');
 
 
 Route::get('/dashboard', function () {

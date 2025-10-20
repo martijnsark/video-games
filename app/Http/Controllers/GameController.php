@@ -14,7 +14,9 @@ class GameController extends Controller
      */
     public function index(Request $request)
     {
-        $query = Game::with('category', 'user');
+        $query = Game::with('category', 'user')
+            // only show active games
+            ->where('is_active', true);
 
         // if search returned a value = search value
         if ($request->filled('search')) {
@@ -145,5 +147,27 @@ class GameController extends Controller
         $game->delete();
 
         return redirect()->route('games.index');
+    }
+
+    //handles overview view + overview required data
+    public function overview()
+    {
+        // load all games data
+        $games = Game::all();
+
+        // load games.overview with games data
+        return view('games.overview', compact('games'));
+    }
+
+    // anyone can toggle game status for now
+    public function toggleStatus(Game $game)
+    {
+        // is game is active make it unactive
+        $game->is_active = !$game->is_active;
+        //save new data
+        $game->save();
+
+        // return to current page
+        return redirect()->back();
     }
 }

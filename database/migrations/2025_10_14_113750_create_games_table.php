@@ -20,6 +20,7 @@ return new class extends Migration
             $table->foreignId('category_id')->constrained();
             $table->integer('price');
             $table->integer('discount');
+            $table->boolean('is_active')->default(true);
             $table->timestamps();
         });
     }
