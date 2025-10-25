@@ -18,6 +18,9 @@ Route::get('/about', function () {
     return view('about');
 }) ->name('about');
 
+Route::get('/user', function () {
+    return view('user');
+}) ->name('user');
 
 
 // dynamic wishlist route foreach user

@@ -51,12 +51,8 @@
     @if($games->isEmpty())
         <div class="text-center">
             <p class="text-gray-400">No games found.</p>
-            <a href="{{ route('games.create') }}" class="btn btn-primary text-gray-400">Create New Game</a>
         </div>
     @else
-        <div class="text-center">
-            <a href="{{ route('games.create') }}" class="btn btn-primary text-gray-400">Create New Game</a>
-        </div>
         <ul class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             @foreach($games as $game)
                 <li class="bg-gray-800 rounded-lg shadow-lg overflow-hidden p-4 flex flex-col space-y-3 hover:shadow-xl transition">
