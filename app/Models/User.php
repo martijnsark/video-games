@@ -45,4 +45,9 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+    // sets a many-to-many relationship where users can have many games
+    public function game_wishlist(){
+        return $this->belongsToMany(Game::class);
+    }
 }

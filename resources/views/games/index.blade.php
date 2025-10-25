@@ -7,18 +7,19 @@
         <h1 class="text-gray-400">Games List</h1>
 
         @foreach($categories as $category)
+            <!-- inline php to see if the current category id matches the requested category in the https request  -->
             @php
                 $isActive = request('category') == $category->id;
             @endphp
 
             @if($isActive)
-                <!-- if already active remove filter on category -->
+                <!-- if filter is already active remove filter on category -->
                 <a href="{{ route('games.index') }}"
                    class="px-3 py-1 rounded-md bg-blue-500 text-white hover:bg-blue-600 transition">
                     {{ $category->name }}
                 </a>
             @else
-                <!-- if not already active activate filter on category  -->
+                <!-- if filter is not already active activate filter on category  -->
                 <a href="{{ route('games.index', ['category' => $category->id]) }}"
                    class="px-3 py-1 rounded-md bg-gray-700 text-gray-200 hover:bg-blue-600 transition">
                     {{ $category->name }}
@@ -59,10 +60,10 @@
         <ul class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             @foreach($games as $game)
                 <li class="bg-gray-800 rounded-lg shadow-lg overflow-hidden p-4 flex flex-col space-y-3 hover:shadow-xl transition">
+                    <!-- game details  -->
                     <h3 class="text-xl font-semibold text-gray-200">{{ $game->title }}</h3>
-                    <img src="{{ $game->image }}"
-                         alt="{{ $game->title }}"
-                         class="w-full h-48 object-cover rounded-md text-gray-400">
+                    <!-- image doesen't work  -->
+                    <img src="{{ $game->image }}" alt="{{ $game->title }}" class="w-full h-48 object-cover rounded-md text-gray-400">
 
                     <p class="text-gray-400"><strong>ID:</strong> {{ $game->id }}</p>
                     <p class="text-gray-400"><strong>Posted by:</strong> {{ $game->user->name }}</p>
@@ -73,6 +74,25 @@
 
                     <!-- edit game link based on game id -->
                     <a href="{{ route('games.edit', $game->id) }}" class="btn btn-primary text-gray-400">Edit Game</a>
+
+                    <!-- add/remove game from wishlist -->
+                    <form action="{{ route('wishlist.add', ['user' => auth()->user()->id, 'game'=> $game->id]) }}" method="POST">
+                        @csrf
+
+                        <!-- inline php to see if current game is in current users wishlist  -->
+                        @php
+                            $wishlistStatus = auth()->user()
+                                ->game_wishlist()
+                                ->where('game_id', $game->id)
+                                ->exists();
+                        @endphp
+
+                            <!-- update text status based on previous inline php + submit button  -->
+                        <button type="submit"  class="btn btn-primary text-gray-400">
+                            {{ $wishlistStatus ? 'Remove from wishlist' : 'Add to wishlist' }}
+                        </button>
+                    </form>
+
                     <!-- Delete form -->
                     <form action="{{ route('games.destroy', $game->id) }}" method="POST">
                         @csrf

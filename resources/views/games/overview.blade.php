@@ -31,9 +31,7 @@
                         @csrf
                         <!-- uses PATCH to update function in GameController -->
                         @method('PATCH')
-                        <button type="submit"
-                                class="w-full px-4 py-2 rounded-md font-semibold text-white transition
-                                {{ $game->is_active ? 'bg-red-500 hover:bg-red-600' : 'bg-green-500 hover:bg-green-600' }}">
+                        <button type="submit" class="w-full px-4 py-2 rounded-md font-semibold text-white transition">
                             {{ $game->is_active ? 'Deactivate' : 'Activate' }}
                         </button>
                     </form>
