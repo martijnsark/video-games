@@ -14,7 +14,7 @@ class GameController extends Controller
      */
     public function index(Request $request)
     {
-        $query = Game::with('category', 'user')
+        $query = Game::with('category')
             // only show active games
             ->where('is_active', true);
 
@@ -83,7 +83,8 @@ class GameController extends Controller
             'category_id' => 'required | exists:categories,id'
         ]);
 
-        $game = new game();
+        $validatedData['user_id'] = Auth::id();
+        $game = game::create($validatedData);
 
         $game->title = $request->input('title');
         $game->image = $request->input('image');

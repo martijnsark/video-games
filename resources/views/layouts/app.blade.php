@@ -16,7 +16,12 @@
     </head>
     <body class="font-sans antialiased">
         <div class="min-h-screen bg-gray-100 dark:bg-gray-900">
-            @include('layouts.navigation')
+            <!-- only show logged in navigation if logged in -->
+            @php
+                if (auth()->check()){
+                       @include('layouts.navigation');
+                }
+            @endphp
             @include('layouts.navbar')
 
             <!-- Page Heading -->
