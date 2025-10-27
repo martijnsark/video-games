@@ -8,21 +8,13 @@
     <a href="{{ route('games.index') }}" class="text-gray-400 hover:text-gray-200 text-lg tracking-wide transition">
         games
     </a>
-
-    <!-- only show user, wishlist, and overview page if logged in (overview = temp) -->
-    @if (auth()->check())
-        <a href="{{ route('user') }}" class="text-gray-400 hover:text-gray-200 text-lg tracking-wide transition">
-            user
-        </a>
-
-        <a href="{{ route('wishlist', ['user' => auth()->user()->id]) }}" class="text-gray-400 hover:text-gray-200 text-lg tracking-wide transition">
-            wishlist
-        </a>
-
-        <a href="{{ route('games.overview') }}" class="text-gray-400 hover:text-gray-200 text-lg tracking-wide transition">
-            overview
-        </a>
-    @endif
-
-
+    <a href="{{ route('user') }}" class="text-gray-400 hover:text-gray-200 text-lg tracking-wide transition">
+        user
+    </a>
+    <a href="{{ route('wishlist', ['user' => auth()->user()->id]) }}" class="text-gray-400 hover:text-gray-200 text-lg tracking-wide transition">
+        wishlist
+    </a>
+    <a href="{{ route('games.overview') }}" class="text-gray-400 hover:text-gray-200 text-lg tracking-wide transition">
+        overview
+    </a>
 </nav>

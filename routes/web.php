@@ -6,8 +6,6 @@ use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 use App\Models\User;
 
-
-// guest open routes
 Route::get('/', function () {
     return view('welcome');
 });
@@ -20,17 +18,10 @@ Route::get('/about', function () {
     return view('about');
 }) ->name('about');
 
-// returned games route as guest accessible
-Route::resource('games', GameController::class) ->names('games');
-
-
-
-
-// regular user routes
-// route for the account page (log out + create game)
 Route::get('/user', function () {
     return view('user');
 }) ->name('user');
+
 
 // dynamic wishlist route foreach user
 Route::get('/wishlist/{user}', function  (User $user) {
@@ -43,22 +34,18 @@ Route::get('/wishlist/{user}', function  (User $user) {
 Route::post('users/{user}/wishlist/{game}/add', [UserController::class, 'updateWishlist'])
     ->name('wishlist.add');
 
-
-
-
-// admin routes
 // route to overview page
 Route::get('/games/overview', [GameController::class, 'overview'])
     ->name('games.overview');
 
+// middleware to ensure logged-in users only
+Route::middleware(['auth'])->group(function () {
+    Route::resource('games', GameController::class);
+}) ->name('games');
+
 // route to update status of data
 Route::patch('/games/{game}/toggle', [GameController::class, 'toggleStatus'])
     ->name('games.toggle');
-
-
-
-
-
 
 
 
