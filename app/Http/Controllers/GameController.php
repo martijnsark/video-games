@@ -83,7 +83,8 @@ class GameController extends Controller
             'category_id' => 'required | exists:categories,id'
         ]);
 
-        $game = new game();
+        $validatedData['user_id'] = Auth::id();
+        $game = game::create($validatedData);
 
         $game->title = $request->input('title');
         $game->image = $request->input('image');

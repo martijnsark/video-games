@@ -6,6 +6,7 @@ use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 use App\Models\User;
 
+//guest
 Route::get('/', function () {
     return view('welcome');
 });
@@ -23,6 +24,9 @@ Route::get('/user', function () {
 }) ->name('user');
 
 
+
+
+// users
 // dynamic wishlist route foreach user
 Route::get('/wishlist/{user}', function  (User $user) {
     // get all active games
@@ -34,22 +38,25 @@ Route::get('/wishlist/{user}', function  (User $user) {
 Route::post('users/{user}/wishlist/{game}/add', [UserController::class, 'updateWishlist'])
     ->name('wishlist.add');
 
+
+
+
+
+
+// admin
 // route to overview page
 Route::get('/games/overview', [GameController::class, 'overview'])
     ->name('games.overview');
-
-// middleware to ensure logged-in users only
-Route::middleware(['auth'])->group(function () {
-    Route::resource('games', GameController::class);
-}) ->name('games');
 
 // route to update status of data
 Route::patch('/games/{game}/toggle', [GameController::class, 'toggleStatus'])
     ->name('games.toggle');
 
 
+// needs to be here otherwise error on overview
+Route::resource('games', GameController::class) ->names('games');
 
-
+// not mine
 Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');

@@ -68,33 +68,43 @@
                     <p class="text-gray-400"><strong>Price:</strong> ${{ $game->price }}</p>
                     <p class="text-gray-400"><strong>Discount:</strong> {{ $game->discount }}%</p>
 
-                    <!-- edit game link based on game id -->
-                    <a href="{{ route('games.edit', $game->id) }}" class="btn btn-primary text-gray-400">Edit Game</a>
+                    <!-- Ensure that the only user that can edit the game is the creator -->
+                    @if (Auth::id() === $game->user_id)
+                        <!-- edit game link based on game id -->
+                        <a href="{{ route('games.edit', $game->id) }}" class="btn btn-primary text-gray-400">Edit Game</a>
+                    @endif
 
-                    <!-- add/remove game from wishlist -->
-                    <form action="{{ route('wishlist.add', ['user' => auth()->user()->id, 'game'=> $game->id]) }}" method="POST">
-                        @csrf
+                    <!-- user has to be logged in to add a game to their wishlist -->
+                    @if (auth()->check())
+                        <!-- add/remove game from wishlist -->
+                        <form action="{{ route('wishlist.add', ['user' => auth()->user()->id, 'game'=> $game->id]) }}" method="POST">
+                            @csrf
 
-                        <!-- inline php to see if current game is in current users wishlist  -->
-                        @php
-                            $wishlistStatus = auth()->user()
-                                ->game_wishlist()
-                                ->where('game_id', $game->id)
-                                ->exists();
-                        @endphp
+                            <!-- inline php to see if current game is in current users wishlist  -->
+                            @php
+                                $wishlistStatus = auth()->user()
+                                    ->game_wishlist()
+                                    ->where('game_id', $game->id)
+                                    ->exists();
+                            @endphp
 
-                            <!-- update text status based on previous inline php + submit button  -->
-                        <button type="submit"  class="btn btn-primary text-gray-400">
-                            {{ $wishlistStatus ? 'Remove from wishlist' : 'Add to wishlist' }}
-                        </button>
-                    </form>
+                                <!-- update text status based on previous inline php + submit button  -->
+                            <button type="submit"  class="btn btn-primary text-gray-400">
+                                {{ $wishlistStatus ? 'Remove from wishlist' : 'Add to wishlist' }}
+                            </button>
+                        </form>
+                    @endif
 
-                    <!-- Delete form -->
-                    <form action="{{ route('games.destroy', $game->id) }}" method="POST">
-                        @csrf
-                        @method('DELETE')
-                        <button type="submit" class="btn btn-danger text-gray-400">Delete Game</button>
-                    </form>
+                    <!-- Ensure that the only user that can delete the game is the creator -->
+                    @if (Auth::id() === $game->user_id)
+                        <!-- Delete form -->
+                        <form action="{{ route('games.destroy', $game->id) }}" method="POST">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit" class="btn btn-danger text-gray-400">Delete Game</button>
+                        </form>
+                    @endif
+
                 </li>
             @endforeach
         </ul>
