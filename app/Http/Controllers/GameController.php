@@ -14,7 +14,7 @@ class GameController extends Controller
      */
     public function index(Request $request)
     {
-        $query = Game::with('category', 'user')
+        $query = Game::with('category')
             // only show active games
             ->where('is_active', true);
 

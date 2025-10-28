@@ -8,10 +8,6 @@ use App\Models\User;
 
 //guest
 Route::get('/', function () {
-    return view('welcome');
-});
-
-Route::get('/home', function () {
     return view('home');
 }) ->name('home');
 
@@ -19,26 +15,25 @@ Route::get('/about', function () {
     return view('about');
 }) ->name('about');
 
-Route::get('/user', function () {
-    return view('user');
-}) ->name('user');
+
 
 
 
 
 // users
 // dynamic wishlist route foreach user
-Route::get('/wishlist/{user}', function  (User $user) {
+Route::middleware(['auth', 'verified'])->group(function () {
+
     // get all active games
-    $games = $user->game_wishlist()->where('is_active', true)->get();
-    return view('games.wishlist', compact('user','games'));
-}) ->name('wishlist');
+    Route::get('/wishlist/{user}', function (User $user) {
+        $games = $user->game_wishlist()->where('is_active', true)->get();
+        return view('games.wishlist', compact('user', 'games'));
+    })->name('wishlist');
 
-// route to copy data to wishlist
-Route::post('users/{user}/wishlist/{game}/add', [UserController::class, 'updateWishlist'])
-    ->name('wishlist.add');
-
-
+    // route to copy data to wishlist
+    Route::post('users/{user}/wishlist/{game}/add', [UserController::class, 'updateWishlist'])
+        ->name('wishlist.add');
+});
 
 
 
@@ -53,8 +48,12 @@ Route::patch('/games/{game}/toggle', [GameController::class, 'toggleStatus'])
     ->name('games.toggle');
 
 
-// needs to be here otherwise error on overview
+// needs to be here otherwise error on overview but counts as guest
 Route::resource('games', GameController::class) ->names('games');
+
+
+
+
 
 // not mine
 Route::get('/dashboard', function () {

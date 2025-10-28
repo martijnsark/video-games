@@ -18,7 +18,7 @@
         <div class="min-h-screen bg-gray-100 dark:bg-gray-900">
             <!-- only show logged in navigation if logged in -->
             @if (auth()->check())
-                @include('layouts.navigation');
+                @include('layouts.navigation')
             @endif
             @include('layouts.navbar')
 
