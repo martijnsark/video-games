@@ -14,10 +14,13 @@
         <a href="{{ route('wishlist', ['user' => auth()->user()->id]) }}" class="text-gray-400 hover:text-gray-200 text-lg tracking-wide transition">
             wishlist
         </a>
-
-        <a href="{{ route('games.overview') }}" class="text-gray-400 hover:text-gray-200 text-lg tracking-wide transition">
-            overview
-        </a>
+        @if (auth()->user()->isAdmin())
+            <a href="{{ route('games.overview') }}" class="text-gray-400 hover:text-gray-200 text-lg tracking-wide transition">
+                overview
+            </a>
+        @endif
     @endif
+
+
 
 </nav>

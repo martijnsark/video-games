@@ -54,6 +54,10 @@ class GameController extends Controller
 
         return view('games.index', compact('games', 'categories'));
     }
+
+
+
+
     /**
      * Show the form for creating a new resource.
      */
@@ -61,12 +65,15 @@ class GameController extends Controller
     {
         //double check user sign-in just in case
         if (!Auth::check()) {
-            abort(403, 'You must be logged in to create a game.');
+            abort(403, 'You must be logged in to view the create page');
         }
 
         $categories = Category::all();
         return view('games.create', compact('categories'));
     }
+
+
+
 
     /**
      * Store a newly created resource in storage.
@@ -109,6 +116,9 @@ class GameController extends Controller
         return redirect()->route ('games.index');
     }
 
+
+
+
     /**
      * Display the specified resource.
      */
@@ -117,6 +127,9 @@ class GameController extends Controller
         //
     }
 
+
+
+
     /**
      * Show the form for editing the specified resource.
      */
@@ -124,12 +137,15 @@ class GameController extends Controller
     {
         //double check user sign-in just in case
         if (!Auth::check()) {
-            abort(403, 'You must be logged in to edit a game.');
+            abort(403, 'You must be logged in to view the edit page.');
         }
 
         $categories = Category::all();
         return view('games.edit', compact('game', 'categories'));
     }
+
+
+
 
     /**
      * Update the specified resource in storage.
@@ -156,6 +172,9 @@ class GameController extends Controller
         return redirect()->route('games.index');
     }
 
+
+
+
     /**
      * Remove the specified resource from storage.
      */
@@ -173,19 +192,35 @@ class GameController extends Controller
         return redirect()->route('games.index');
     }
 
+
+
+
     //handles overview view + overview required data
     public function overview()
     {
+        // Check if user is logged in and is admin
+        if (!auth()->check() || !auth()->user()->isAdmin()) {
+            abort(403, 'You must be logged in as a admin to view this page.');
+        }
+
         // load all games data
         $games = Game::all();
 
         // load games.overview with games data
         return view('games.overview', compact('games'));
+
     }
+
+
 
     // anyone can toggle game status for now
     public function toggleStatus(Game $game)
     {
+        // Check if user is logged in and is admin
+        if (!auth()->check() || !auth()->user()->isAdmin()) {
+            abort(403, 'You must be logged in as a admin to use this page.');
+        }
+
         // is game is active make it unactive
         $game->is_active = !$game->is_active;
         //save new data

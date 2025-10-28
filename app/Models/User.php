@@ -50,4 +50,9 @@ class User extends Authenticatable
     public function game_wishlist(){
         return $this->belongsToMany(Game::class);
     }
+
+    public function isAdmin(): bool
+    {
+        return $this->role === 1;
+    }
 }

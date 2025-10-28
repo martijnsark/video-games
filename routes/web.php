@@ -3,6 +3,7 @@
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\GameController;
 use App\Http\Controllers\UserController;
+use App\Http\Middleware\AdminMiddleware;
 use Illuminate\Support\Facades\Route;
 use App\Models\User;
 
@@ -42,10 +43,11 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('games', GameController::class)
         ->only(['store', 'update', 'destroy'])
         ->names('games');
+});
 
 
-
-    // admin
+// admin
+Route::middleware(['auth', AdminMiddleware::class])->group(function () {
     // route to overview page
     Route::get('/games/overview', [GameController::class, 'overview'])
         ->name('games.overview');
@@ -55,11 +57,15 @@ Route::middleware(['auth'])->group(function () {
         ->name('games.toggle');
 });
 
+
 // has to be here otherwise overview stops loading properly
 // Public game route (index)
 Route::resource('games', GameController::class)
     ->only(['index'])
     ->names('games');
+
+
+
 
 
 
