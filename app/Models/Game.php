@@ -25,4 +25,10 @@ class Game extends Model
     public function user(){
         return $this->belongsTo(User::class);
     }
+
+    // for the pivot table
+    public function users()
+    {
+        return $this->belongsToMany(User::class);
+    }
 }

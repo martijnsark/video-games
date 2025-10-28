@@ -5,12 +5,18 @@ namespace App\Http\Controllers;
 use App\Models\Game;
 use Illuminate\Http\Request;
 use App\Models\User;
+use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
 {
     // adds/removes game from wishlist based on if game id is already in users wishlist
     public function updateWishlist(User $user, Game $game)
     {
+        //double check user sign-in just in case
+        if (!Auth::check()) {
+            abort(403, 'You must be logged in to wishlist a game.');
+        }
+
         // check if game isn't in wishlist
         if (!$user->game_wishlist()->where('game_id', $game->id)->exists()) {
             // add game to wishlist if it isn't

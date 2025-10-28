@@ -15,15 +15,15 @@ Route::get('/about', function () {
     return view('about');
 }) ->name('about');
 
-
+Route::get('games/home', [GameController::class, 'index'])->name('games.home');
 
 
 
 
 // users
-// dynamic wishlist route foreach user
-Route::middleware(['auth', 'verified'])->group(function () {
+Route::middleware(['auth'])->group(function () {
 
+    // dynamic wishlist route foreach user
     // get all active games
     Route::get('/wishlist/{user}', function (User $user) {
         $games = $user->game_wishlist()->where('is_active', true)->get();
@@ -33,24 +33,33 @@ Route::middleware(['auth', 'verified'])->group(function () {
     // route to copy data to wishlist
     Route::post('users/{user}/wishlist/{game}/add', [UserController::class, 'updateWishlist'])
         ->name('wishlist.add');
+
+    // added here to middleware the edit and create
+    Route::get('games/create', [GameController::class, 'create'])->name('games.create');
+    Route::get('games/{game}/edit', [GameController::class, 'edit'])->name('games.edit');
+
+    // Store, update, destroy
+    Route::resource('games', GameController::class)
+        ->only(['store', 'update', 'destroy'])
+        ->names('games');
+
+
+
+    // admin
+    // route to overview page
+    Route::get('/games/overview', [GameController::class, 'overview'])
+        ->name('games.overview');
+
+    // route to update status of data
+    Route::patch('/games/{game}/toggle', [GameController::class, 'toggleStatus'])
+        ->name('games.toggle');
 });
 
-
-
-
-// admin
-// route to overview page
-Route::get('/games/overview', [GameController::class, 'overview'])
-    ->name('games.overview');
-
-// route to update status of data
-Route::patch('/games/{game}/toggle', [GameController::class, 'toggleStatus'])
-    ->name('games.toggle');
-
-
-// needs to be here otherwise error on overview but counts as guest
-Route::resource('games', GameController::class) ->names('games');
-
+// has to be here otherwise overview stops loading properly
+// Public game route (index)
+Route::resource('games', GameController::class)
+    ->only(['index'])
+    ->names('games');
 
 
 

@@ -59,6 +59,11 @@ class GameController extends Controller
      */
     public function create()
     {
+        //double check user sign-in just in case
+        if (!Auth::check()) {
+            abort(403, 'You must be logged in to create a game.');
+        }
+
         $categories = Category::all();
         return view('games.create', compact('categories'));
     }
@@ -68,7 +73,7 @@ class GameController extends Controller
      */
     public function store(Request $request)
     {
-        //double check user sign-in
+        //double check user sign-in just in case
         if (!Auth::check()) {
             abort(403, 'You must be logged in to create a game.');
         }
@@ -117,6 +122,11 @@ class GameController extends Controller
      */
     public function edit(Game $game)
     {
+        //double check user sign-in just in case
+        if (!Auth::check()) {
+            abort(403, 'You must be logged in to edit a game.');
+        }
+
         $categories = Category::all();
         return view('games.edit', compact('game', 'categories'));
     }
@@ -126,6 +136,12 @@ class GameController extends Controller
      */
     public function update(Request $request, Game $game)
     {
+        //double check user sign-in just in case
+        if (!Auth::check()) {
+            abort(403, 'You must be logged in to edit a game.');
+        }
+
+
         $validatedData = $request->validate([
             'title' => 'required|string|max:255',
             'image' => 'required|string|max:255',
@@ -145,6 +161,13 @@ class GameController extends Controller
      */
     public function destroy(Game $game)
     {
+        //double check user sign-in just in case
+        if (!Auth::check()) {
+            abort(403, 'You must be logged in to delete a game.');
+        }
+
+        $game->users()->detach();
+
         $game->delete();
 
         return redirect()->route('games.index');
