@@ -50,6 +50,7 @@
             <span class="text-red-500 text-sm">{{ $message }}</span>
             @enderror
 
+
             <button type="submit" class="text-gray-400">Submit</button>
         </form>
     </div>

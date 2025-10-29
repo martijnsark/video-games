@@ -14,17 +14,17 @@ class GameController extends Controller
      */
     public function index(Request $request)
     {
+        // creating a query
         $query = Game::with('category')
-            // only show active games
+            // show only active games
             ->where('is_active', true);
 
-        // if search returned a value = search value
+        // search text based searches if search input given
         if ($request->filled('search')) {
             $search = $request->input('search');
 
-           // build query based on search
+            // filter games where any field matches the search
             $query->where(function ($q) use ($search) {
-                // search based on title, image, description, price, or discount
                 $q->where('title', 'like', "%{$search}%")
                     ->orWhere('image', 'like', "%{$search}%")
                     ->orWhere('description', 'like', "%{$search}%")
@@ -43,15 +43,18 @@ class GameController extends Controller
             });
         }
 
-        // category search buttons logic
+        // filter games by selected category (if provided)
         if ($request->filled('category')) {
             $query->where('category_id', $request->input('category'));
         }
 
+        // execute query and get results
         $games = $query->get();
-        // show buttons
+
+        // get all categories for category buttons
         $categories = Category::all();
 
+        // send user to games.index with the games and categories data
         return view('games.index', compact('games', 'categories'));
     }
 
@@ -63,12 +66,15 @@ class GameController extends Controller
      */
     public function create()
     {
-        //double check user sign-in just in case
+        // double check user sign-in just in case
         if (!Auth::check()) {
             abort(403, 'You must be logged in to view the create page');
         }
 
+        // a variable that contains all categories data
         $categories = Category::all();
+
+        // send user to games.create with the categories data
         return view('games.create', compact('categories'));
     }
 
@@ -80,12 +86,12 @@ class GameController extends Controller
      */
     public function store(Request $request)
     {
-        //double check user sign-in just in case
+        // double check user sign-in just in case
         if (!Auth::check()) {
             abort(403, 'You must be logged in to create a game.');
         }
 
-
+        // set required validations for data
         $validatedData = $request->validate([
             'title' => 'required | string | max:255',
             'image' => 'required | string | max:255',
@@ -95,24 +101,28 @@ class GameController extends Controller
             'category_id' => 'required | exists:categories,id'
         ]);
 
+        // set user id as the logged-in user
         $validatedData['user_id'] = Auth::id();
+        // create and save a new game
         $game = game::create($validatedData);
 
+        // gather requested input from user
         $game->title = $request->input('title');
         $game->image = $request->input('image');
         $game->description = $request->input('description');
         $game->price = $request->input('price');
         $game->discount = $request->input('discount');
 
-        //foreign id
-        //hard coded
+        // get foreign id's from the user and category
+        //hard coded example
         //$game->user_id = 1;
         $game->user_id = Auth::id();
         $game->category_id = $request->input('category_id');
 
-        //save new data
+        // save data into database
         $game->save();
 
+        // return user to games.index
         return redirect()->route ('games.index');
     }
 
@@ -135,12 +145,20 @@ class GameController extends Controller
      */
     public function edit(Game $game)
     {
-        //double check user sign-in just in case
+        // double check user sign-in just in case
         if (!Auth::check()) {
             abort(403, 'You must be logged in to view the edit page.');
         }
 
+        // assurance that the edit page can only be visited by the original creator
+        if ($game->user_id !== Auth::id()) {
+            abort(403, 'You must be the original creator to view this games edit page.');
+        }
+
+        // a variable that contains all categories data
         $categories = Category::all();
+
+        // send user to games.edit with game data and all the categories data
         return view('games.edit', compact('game', 'categories'));
     }
 
@@ -152,12 +170,17 @@ class GameController extends Controller
      */
     public function update(Request $request, Game $game)
     {
-        //double check user sign-in just in case
+        // double check user sign-in just in case
         if (!Auth::check()) {
             abort(403, 'You must be logged in to edit a game.');
         }
 
+        // double assurance that update request can only be performed by the original creator
+        if ($game->user_id !== Auth::id()) {
+            abort(403, 'You must be the original creator to edit this game.');
+        }
 
+        // set required validations for data
         $validatedData = $request->validate([
             'title' => 'required|string|max:255',
             'image' => 'required|string|max:255',
@@ -167,8 +190,10 @@ class GameController extends Controller
             'category_id' => 'required|exists:categories,id',
         ]);
 
+        // update the game with the new validated data
         $game->update($validatedData);
 
+        // return user to games.index
         return redirect()->route('games.index');
     }
 
@@ -185,10 +210,13 @@ class GameController extends Controller
             abort(403, 'You must be logged in to delete a game.');
         }
 
+        // remove users from wishlist
         $game->users()->detach();
 
+        // delete game
         $game->delete();
 
+        // return user to games.index
         return redirect()->route('games.index');
     }
 
@@ -221,8 +249,9 @@ class GameController extends Controller
             abort(403, 'You must be logged in as a admin to use this page.');
         }
 
-        // is game is active make it unactive
+        // if game is active make it unactive
         $game->is_active = !$game->is_active;
+
         //save new data
         $game->save();
 
