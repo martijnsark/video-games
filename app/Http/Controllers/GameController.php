@@ -72,7 +72,7 @@ class GameController extends Controller
         }
 
         // track number of wishlisted games by current user
-        $wishlistedCount = Auth::user()->game_wishlist()->count();
+        $wishlistedCount = Auth::user()->game_wishlist()->where('is_active', true)->count();
 
         if ($wishlistedCount < 3) {
             return back()->withErrors([
@@ -101,7 +101,7 @@ class GameController extends Controller
         }
 
         // double-checking if the user really does have 3 wishlisted games
-        $wishlistedCount = Auth::user()->game_wishlist()->count();
+        $wishlistedCount = Auth::user()->game_wishlist()->where('is_active', true)->count();
 
         if ($wishlistedCount < 3) {
             return back()->withErrors([
@@ -264,7 +264,7 @@ class GameController extends Controller
 
 
 
-    // anyone can toggle game status for now
+    // admin can toggle game status
     public function toggleStatus(Game $game)
     {
         // Check if user is logged in and is admin
