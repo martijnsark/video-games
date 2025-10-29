@@ -24,6 +24,7 @@ class GameController extends Controller
             $search = $request->input('search');
 
             // filter games where any field matches the search
+            // eloquent uses parameter binding here. ($search is safely escaped and this query is safe from SQL injection)
             $query->where(function ($q) use ($search) {
                 $q->where('title', 'like', "%{$search}%")
                     ->orWhere('image', 'like', "%{$search}%")
