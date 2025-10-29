@@ -13,6 +13,14 @@
 
                     <br>
 
+                    <!-- game details  -->
+                    @if($errors->any())
+                        <div class="mb-4 p-4 bg-red-100 text-red-700 rounded">
+                            @foreach($errors->all() as $error)
+                                <p>{{ $error }}</p>
+                            @endforeach
+                        </div>
+                    @endif
                     <a href="{{ route('games.create') }}" class="btn btn-primary text-gray-400">Create New Game</a>
 
                     <form method="POST" action=" {{route('logout') }}">

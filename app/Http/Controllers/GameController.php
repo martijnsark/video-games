@@ -71,6 +71,15 @@ class GameController extends Controller
             abort(403, 'You must be logged in to view the create page');
         }
 
+        // track number of wishlisted games by current user
+        $wishlistedCount = Auth::user()->game_wishlist()->count();
+
+        if ($wishlistedCount < 3) {
+            return back()->withErrors([
+                'error' => 'You need to have wishlisted at least 3 games to create a new one.'
+            ]);
+        }
+
         // a variable that contains all categories data
         $categories = Category::all();
 
@@ -89,6 +98,15 @@ class GameController extends Controller
         // double check user sign-in just in case
         if (!Auth::check()) {
             abort(403, 'You must be logged in to create a game.');
+        }
+
+        // double-checking if the user really does have 3 wishlisted games
+        $wishlistedCount = Auth::user()->game_wishlist()->count();
+
+        if ($wishlistedCount < 3) {
+            return back()->withErrors([
+                'error' => 'You need to have wishlisted at least 3 games to create a new one.'
+            ]);
         }
 
         // set required validations for data
