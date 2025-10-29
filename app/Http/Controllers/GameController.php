@@ -210,6 +210,11 @@ class GameController extends Controller
             abort(403, 'You must be logged in to delete a game.');
         }
 
+        // double assurance that DELETE request can only be performed by the original creator
+        if ($game->user_id !== Auth::id()) {
+            abort(403, 'You must be the original creator to delete this game.');
+        }
+
         // remove users from wishlist
         $game->users()->detach();
 
