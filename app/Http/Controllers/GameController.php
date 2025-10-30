@@ -44,7 +44,7 @@ class GameController extends Controller
             });
         }
 
-        // filter games by selected category (if provided)
+        // filter games by selected category (if provided via buttons)
         if ($request->filled('category')) {
             $query->where('category_id', $request->input('category'));
         }

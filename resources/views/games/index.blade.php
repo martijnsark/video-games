@@ -14,12 +14,14 @@
 
             @if($isActive)
                 <!-- if filter is already active remove URL filter on category -->
+                <!-- button for the active category -->
                 <a href="{{ route('games.index') }}"
                    class="px-3 py-1 rounded-md bg-blue-500 text-white hover:bg-blue-600 transition">
                     {{ $category->name }}
                 </a>
             @else
                 <!-- if filter is not already active activate URL filter on category  -->
+                <!-- buttons for an inactive categories -->
                 <a href="{{ route('games.index', ['category' => $category->id]) }}"
                    class="px-3 py-1 rounded-md bg-gray-700 text-gray-200 hover:bg-blue-600 transition">
                     {{ $category->name }}
