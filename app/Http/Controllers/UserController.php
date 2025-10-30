@@ -17,6 +17,11 @@ class UserController extends Controller
             abort(403, 'You must be logged in to wishlist a game.');
         }
 
+        // assurance that the wishlist page can only be visited by the correct user
+        if ($user->id !== Auth::id()) {
+            abort(403, 'You must be the correct user to edit this wishlist page.');
+        }
+
         // check if game isn't in wishlist
         if (!$user->game_wishlist()->where('game_id', $game->id)->exists()) {
             // add game to wishlist if it isn't

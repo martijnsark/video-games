@@ -16,7 +16,12 @@ Route::get('/about', function () {
     return view('about');
 }) ->name('about');
 
-
+// games resource route
+// can be moved now????
+Route::resource('games', GameController::class)
+    // Public game route (index)
+    ->only(['index'])
+    ->names('games');
 
 
 // users (each uses Auth middleware as user sign in proof)
@@ -25,6 +30,12 @@ Route::middleware(['auth'])->group(function () {
     // dynamic wishlist route foreach user
     // get all active games
     Route::get('/wishlist/{user}', function (User $user) {
+        // Ensure only the logged-in user can see their wishlist
+        if ($user->id !== auth()->id()) {
+            abort(403, 'You can only view your own wishlist.');
+        }
+
+
         $games = $user->game_wishlist()->where('is_active', true)->get();
         return view('games.wishlist', compact('user', 'games'));
     })->name('wishlist');
@@ -56,11 +67,6 @@ Route::middleware(['auth', AdminMiddleware::class])->group(function () {
 });
 
 
-// has to be here otherwise overview stops loading properly
-// Public game route (index)
-Route::resource('games', GameController::class)
-    ->only(['index'])
-    ->names('games');
 
 
 
