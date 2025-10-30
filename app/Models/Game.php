@@ -28,6 +28,7 @@ class Game extends Model
     }
 
     // for the pivot table
+    // sets a many-to-many relationship where games can have many users
     public function users()
     {
         return $this->belongsToMany(User::class);
