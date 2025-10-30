@@ -24,7 +24,7 @@ class GameController extends Controller
             $search = $request->input('search');
 
             // filter games where any field matches the search
-            // eloquent uses parameter binding here. ($search is safely escaped and this query is safe from SQL injection)
+            // uses parameter binding to safely bind the variable and search value with LIKE
             $query->where(function ($q) use ($search) {
                 $q->where('title', 'like', "%{$search}%")
                     ->orWhere('image', 'like', "%{$search}%")
@@ -32,12 +32,12 @@ class GameController extends Controller
                     ->orWhere('price', 'like', "%{$search}%")
                     ->orWhere('discount', 'like', "%{$search}%");
 
-                // search based on category
+                // search based on category like search
                 $q->orWhereHas('category', function ($catQuery) use ($search) {
                     $catQuery->where('name', 'like', "%{$search}%");
                 });
 
-                // search based on user
+                // search based on user like search
                 $q->orWhereHas('user', function ($userQuery) use ($search) {
                     $userQuery->where('name', 'like', "%{$search}%");
                 });
