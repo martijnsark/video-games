@@ -27,9 +27,10 @@
                     </p>
 
                     <!-- submit button reflecting upcoming status change on click + handles status change -->
+                    <!-- submit via post with patch to games.toggle route based on this game id -->
                     <form action="{{ route('games.toggle', $game->id) }}" method="POST" class="mt-2">
                         @csrf
-                        <!-- uses PATCH to update function in GameController -->
+                        <!-- uses PATCH to only update active status field -->
                         @method('PATCH')
                         <button type="submit" class="w-full px-4 py-2 rounded-md font-semibold text-white transition">
                             {{ $game->is_active ? 'Deactivate' : 'Activate' }}

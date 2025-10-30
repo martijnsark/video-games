@@ -1,5 +1,7 @@
 <x-app-layout>
     <div class="flex items-center justify-center min-h-screen">
+        <!-- show update form based on game id  -->
+        <!-- uses post to modify data  -->
         <form action="{{ route('games.update', $game->id) }}" method="POST" class="flex flex-col space-y-4 w-full max-w-xl p-4">
 
         @csrf
@@ -8,6 +10,7 @@
             <p class="text-gray-400">Edit game form</p>
 
             <label for="title" class="text-gray-400">Title:</label>
+            <!-- uses lines like $game->title to fill data from before the edit was started -->
             <input type="text" id="title" name="title" value="{{ old('title', $game->title) }}">
             @error('title')
             <span class="text-red-500 text-sm">{{ $message }}</span>
@@ -15,6 +18,7 @@
 
             <select name="category_id" id="category_id" class="form-control">
                 <option value=""> select a category </option>
+                <!-- create for each category id a option showing the name or otherwise keep it empty -->
                 @foreach($categories as $category)
                     <option value="{{ $category->id }}"
                         {{ old('category_id', $game->category_id) == $category->id ? 'selected' : '' }}>

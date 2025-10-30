@@ -16,12 +16,10 @@ Route::get('/about', function () {
     return view('about');
 }) ->name('about');
 
-Route::get('games/home', [GameController::class, 'index'])->name('games.home');
 
 
 
-
-// users
+// users (each uses Auth middleware as user sign in proof)
 Route::middleware(['auth'])->group(function () {
 
     // dynamic wishlist route foreach user
@@ -46,7 +44,7 @@ Route::middleware(['auth'])->group(function () {
 });
 
 
-// admin
+// admin ( both use my AdminMiddleware to proof their actually admin)
 Route::middleware(['auth', AdminMiddleware::class])->group(function () {
     // route to overview page
     Route::get('/games/overview', [GameController::class, 'overview'])

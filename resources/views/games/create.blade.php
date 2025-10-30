@@ -1,5 +1,6 @@
 <x-app-layout>
     <div class="flex items-center justify-center min-h-screen">
+        <!-- uses post to create data  -->
         <form action="{{ route('games.store') }}" method="post" class="flex flex-col space-y-4 w-full max-w-xl p-4">
             @csrf
 
@@ -13,6 +14,7 @@
 
             <select name="category_id" id="category_id" class="form-control">
                 <option value=""> select a category </option>
+                <!-- create for each category id a option showing the name or otherwise keep it empty -->
                 @foreach($categories as $category)
                     <option value="{{ $category->id }}"
                         {{ old('category_id') == $category->id ? 'selected' : '' }}>

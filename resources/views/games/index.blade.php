@@ -13,13 +13,13 @@
             @endphp
 
             @if($isActive)
-                <!-- if filter is already active remove filter on category -->
+                <!-- if filter is already active remove URL filter on category -->
                 <a href="{{ route('games.index') }}"
                    class="px-3 py-1 rounded-md bg-blue-500 text-white hover:bg-blue-600 transition">
                     {{ $category->name }}
                 </a>
             @else
-                <!-- if filter is not already active activate filter on category  -->
+                <!-- if filter is not already active activate URL filter on category  -->
                 <a href="{{ route('games.index', ['category' => $category->id]) }}"
                    class="px-3 py-1 rounded-md bg-gray-700 text-gray-200 hover:bg-blue-600 transition">
                     {{ $category->name }}
@@ -64,6 +64,7 @@
                     <p class="text-gray-400"><strong>ID:</strong> {{ $game->id }}</p>
                     <p class="text-gray-400"><strong>Posted by:</strong> {{ $game->user->name }}</p>
                     <p class="text-gray-400"><strong>Description:</strong> {{ $game->description }}</p>
+                    <!-- if category exists get category name otherwise enter No Category -->
                     <p class="text-gray-400"><strong>Category:</strong> {{ $game->category ? $game->category->name : 'No Category' }}</p>
                     <p class="text-gray-400"><strong>Price:</strong> ${{ $game->price }}</p>
                     <p class="text-gray-400"><strong>Discount:</strong> {{ $game->discount }}%</p>
@@ -77,6 +78,7 @@
                     <!-- user has to be logged in to add a game to their wishlist -->
                     @if (auth()->check())
                         <!-- add/remove game from wishlist -->
+                        <!-- get user id and game id of game -->
                         <form action="{{ route('wishlist.add', ['user' => auth()->user()->id, 'game'=> $game->id]) }}" method="POST">
                             @csrf
 

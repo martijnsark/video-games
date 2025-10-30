@@ -16,10 +16,11 @@
     </head>
     <body class="font-sans antialiased">
         <div class="min-h-screen bg-gray-100 dark:bg-gray-900">
-            <!-- only show logged in navigation if logged in -->
+            <!-- only show logged in users the navigation -->
             @if (auth()->check())
                 @include('layouts.navigation')
             @endif
+            <!-- my navbar partial -->
             @include('layouts.navbar')
 
             <!-- Page Heading -->

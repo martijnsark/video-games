@@ -13,7 +13,7 @@
 
                     <br>
 
-                    <!-- game details  -->
+                    <!-- errors for create if wishlist does not have 3 games  -->
                     @if($errors->any())
                         <div class="mb-4 p-4 bg-red-100 text-red-700 rounded">
                             @foreach($errors->all() as $error)
@@ -21,6 +21,7 @@
                             @endforeach
                         </div>
                     @endif
+                    <!-- send user to create on click -->
                     <a href="{{ route('games.create') }}" class="btn btn-primary text-gray-400">Create New Game</a>
 
                     <form method="POST" action=" {{route('logout') }}">

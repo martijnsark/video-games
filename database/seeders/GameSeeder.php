@@ -5,6 +5,8 @@ namespace Database\Seeders;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 use Faker\Factory as Faker;
+use App\Models\User;
+use App\Models\Category;
 
 class GameSeeder extends Seeder
 {
@@ -12,35 +14,38 @@ class GameSeeder extends Seeder
     {
         $faker = Faker::create();
 
-        $titles = [
-            'The Legend of Zelda', 'Super Mario Odyssey', 'Minecraft',
-            'Fortnite', 'Call of Duty', 'FIFA 23', 'Cyberpunk 2077',
-            'Elden Ring', 'God of War', 'Among Us', 'Halo Infinite',
-            'Animal Crossing', 'Overwatch', 'Genshin Impact', 'Resident Evil Village',
-            'Horizon Forbidden West', 'Final Fantasy XIV', 'Assassin’s Creed Valhalla',
-            'Mario Kart 8', 'Stardew Valley', 'League of Legends', 'Valorant',
-            'The Witcher 3', 'Grand Theft Auto V', 'Minecraft Dungeons', 'Pokemon Sword',
-            'Pokemon Shield', 'Splatoon 3', 'Dragon Age Inquisition', 'Dark Souls III',
-            'Monster Hunter Rise', 'Fall Guys', 'Doom Eternal', 'Terraria', 'Rocket League',
-            'Among Us', 'Dead by Daylight', 'Star Wars Jedi', 'CyberConnect2 Ninja',
-            'Little Nightmares', 'F1 2023', 'Forza Horizon 5', 'Ghost of Tsushima',
-            'Sekiro', 'Cuphead', 'Ori and the Will of the Wisps', 'It Takes Two', 'Control'
+        // ✅ Make sure we have at least one user
+        if (User::count() === 0) {
+            User::factory()->create(); // or manually create one if you don’t use factories
+        }
+
+        // ✅ Make sure we have at least 1 category
+        if (Category::count() === 0) {
+            Category::factory()->count(5)->create(); // or manually insert 5 categories
+        }
+
+        $userIds = User::pluck('id')->toArray();
+        $categoryIds = Category::pluck('id')->toArray();
+
+        $soulGames = [
+            'Dark Souls III',
+            'Elden Ring',
+            'Sekiro: Shadows Die Twice'
         ];
 
-
-        $categories = [1, 2, 3, 4, 5]; // Adjust based on your category table
-
         $games = [];
-        for ($i = 1; $i <= 10; $i++) { // generate 50 rows
-            $title = $faker->unique()->randomElement($titles);
+        foreach ($soulGames as $title) {
             $games[] = [
-                'user_id' => $faker->numberBetween(1, 10),
+                'user_id' => $faker->randomElement($userIds),
                 'title' => $title,
-                'image' => strtolower(str_replace(' ', '_', $title)) . '.jpg',
-                'description' => $faker->paragraph(2),
-                'category_id' => $faker->randomElement($categories),
-                'price' => $faker->numberBetween(20, 100),
-                'discount' => $faker->numberBetween(0, 50),
+                'image' => strtolower(str_replace([' ', ':'], '_', $title)) . '.jpg',
+                'description' => $faker->paragraph(3),
+                'category_id' => $faker->randomElement($categoryIds),
+                'price' => $faker->numberBetween(40, 90),
+                'discount' => $faker->numberBetween(0, 30),
+                'is_active' => true,
+                'created_at' => now(),
+                'updated_at' => now(),
             ];
         }
 

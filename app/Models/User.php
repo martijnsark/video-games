@@ -51,6 +51,7 @@ class User extends Authenticatable
         return $this->belongsToMany(Game::class);
     }
 
+    // function to check is user is an admin account
     public function isAdmin(): bool
     {
         return $this->role === 1;

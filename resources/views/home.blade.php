@@ -7,6 +7,7 @@
             This website was designed for the soul purpose to create, manage, and compare games and their prices and discounts respectively.
         </p>
 
+        <!-- if logged in show logged-in status text -->
         @if (auth()->check())
             <div class="text-center">
                 <p class="text-gray-400"> You are logged in</p>
@@ -15,6 +16,7 @@
     </div>
 
     <header class="w-full lg:max-w-4xl max-w-[335px] text-sm mb-6 not-has-[nav]:hidden">
+            <!-- if not logged in show login/signup buttons -->
             @if (!auth()->check())
             <div class="text-center">
                 <button

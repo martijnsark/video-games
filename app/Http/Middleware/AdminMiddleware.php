@@ -15,10 +15,12 @@ class AdminMiddleware
      */
     public function handle(Request $request, Closure $next): Response
     {
+        // if not an admin user request 403 abort
         if (! $request->user()?->isAdmin()) {
             abort(403, 'Unauthorized');
         }
 
+        // if admin proceed with request
         return $next($request);
     }
 }

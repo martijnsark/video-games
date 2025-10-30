@@ -14,7 +14,7 @@ class GameController extends Controller
      */
     public function index(Request $request)
     {
-        // creating a query
+        // creating a query and loads categories
         $query = Game::with('category')
             // show only active games
             ->where('is_active', true);
@@ -49,10 +49,10 @@ class GameController extends Controller
             $query->where('category_id', $request->input('category'));
         }
 
-        // execute query and get results
+        // execute query and get search results
         $games = $query->get();
 
-        // get all categories for category buttons
+        // get all categories for category buttons to display in view
         $categories = Category::all();
 
         // send user to games.index with the games and categories data
@@ -75,6 +75,7 @@ class GameController extends Controller
         // track number of wishlisted games by current user
         $wishlistedCount = Auth::user()->game_wishlist()->where('is_active', true)->count();
 
+        // if wishlist has less than 3 wishlisted games return errors
         if ($wishlistedCount < 3) {
             return back()->withErrors([
                 'error' => 'You need to have wishlisted at least 3 games to create a new one.'
@@ -104,6 +105,7 @@ class GameController extends Controller
         // double-checking if the user really does have 3 wishlisted games
         $wishlistedCount = Auth::user()->game_wishlist()->where('is_active', true)->count();
 
+        // if wishlist has less than 3 wishlisted games return errors
         if ($wishlistedCount < 3) {
             return back()->withErrors([
                 'error' => 'You need to have wishlisted at least 3 games to create a new one.'
@@ -120,9 +122,10 @@ class GameController extends Controller
             'category_id' => 'required | exists:categories,id'
         ]);
 
-        // set user id as the logged-in user
+        // adding the currently logged-in user's id to the validated data array
+        // validates data
         $validatedData['user_id'] = Auth::id();
-        // create and save a new game
+        // create and save a new game with safety check
         $game = game::create($validatedData);
 
         // gather requested input from user

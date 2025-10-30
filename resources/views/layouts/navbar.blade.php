@@ -9,18 +9,16 @@
         games
     </a>
 
-    <!-- only show user, wishlist, and overview page if logged in (overview = temp) -->
+    <!-- only show user, wishlist. -->
     @if (auth()->check())
         <a href="{{ route('wishlist', ['user' => auth()->user()->id]) }}" class="text-gray-400 hover:text-gray-200 text-lg tracking-wide transition">
             wishlist
         </a>
+        <!-- only show admin user, overview. -->
         @if (auth()->user()->isAdmin())
             <a href="{{ route('games.overview') }}" class="text-gray-400 hover:text-gray-200 text-lg tracking-wide transition">
                 overview
             </a>
         @endif
     @endif
-
-
-
 </nav>
