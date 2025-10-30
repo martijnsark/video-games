@@ -32,6 +32,7 @@
     <!-- search bar -->
     <div class="flex flex-col items-center space-y-4">
         <form action="{{ route('games.index') }}" method="GET" class="mb-6">
+            @csrf
             <input
                 type="text"
                 name="search"
